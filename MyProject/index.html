@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+  <script src="roomBooking.js"></script> 
+  <link rel="stylesheet" href="roomBooking.css">
+  <title>RoomBooking</title>
+  <style>
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* input[type="time"]::-webkit-calendar-picker-indicator {
+      background: none;
+    } */
+  </style>
+</head>
+
+<body ng-app="roomBookingApp">
+  <div ng-controller="roomBookingCtrl">
+    <div class="container">
+      <div id="roomBookingDetails" ng-hide="form1">
+        <div class="box">
+          <div class="boxin">
+            <div class="row text-center">
+              <h2 class="head mb-5 mt-5 text-center">Room booking details</h2>
+            </div>
+            <form name="roomBookingDetails" novalidate>
+              <div class="row mb-4">
+                <div class="col-6"> 
+  
+                  <label id="label1">Name:</label><br>
+                  <input type="text" class="form-control" placeholder="Enter your full name" name="customerName"
+                    ng-model="customerName" pattern="[a-zA-Z]{1,}" ng-required="true">
+                  <span ng-show="roomBookingDetails.$submitted || roomBookingDetails.customerName.$dirty">
+                    <span class="error" ng-show="roomBookingDetails.customerName.$error.required"> Name is
+                      required</span>
+                    <span class="error" ng-show="roomBookingDetails.customerName.$error.pattern"> Name cannot be
+                      Number</span>
+                  </span>
+                </div>
+                <div class="col-6">
+                  <label id="label1">Age:</label><br>
+                  <input type="number" class="form-control" placeholder="Enter your age" name="customerAge"
+                    ng-model="customerAge" ng-minlength="1" ng-maxlength="2" ng-required="true">
+                  <span ng-show="roomBookingDetails.$submitted || roomBookingDetails.customerAge.$dirty">
+                    <span class="error" ng-show="roomBookingDetails.customerAge.$error.required">Age is required</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row mb-4">
+                <div class="col-6">
+                  <span id="label1">Gender:</span><br>
+                  <select name="customerGender" ng-model="customerGender" class="form-control selectbox"
+                    ng-required="true">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Transgender">Transgender</option>
+                    <option value="" hidden>Choose your gender</option>
+                  </select>
+                  <span ng-show="roomBookingDetails.$submitted || roomBookingDetails.customerGender.$dirty">
+                    <span class="error" ng-show="roomBookingDetails.customerGender.$error.required">Gender must be
+                      choosen</span>
+                  </span>
+                </div>
+
+                <div class="col-6">
+                  <label id="label1">Purpose:</label><br>
+                  <input type="text" class="form-control" placeholder="Enter the purpose of visit"
+                    name="customerPurpose" ng-model="customerPurpose" pattern="[a-zA-Z0-9]{1,}" ng-required="true">
+                  <span ng-show="roomBookingDetails.$submitted || roomBookingDetails.customerPurpose.$dirty">
+                    <span class="error" ng-show="roomBookingDetails.customerPurpose.$error.required">Purpose is
+                      required</span>
+                    <span class="error" ng-show="roomBookingDetails.customerPurpose.$error.pattern">Valid Purpose</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row mb-4">
+                <div class="col-6">
+                  <label id="label1">Email:</label><br>
+                  <input type="email" class="form-control" placeholder="Enter e-mail address" name="customerEmail"
+                    ng-model="customerEmail" ng-required="true">
+                  <span ng-show="roomBookingDetails.$submitted || roomBookingDetails.customerEmail.$dirty">
+                    <span class="error" ng-show="roomBookingDetails.customerEmail.$error.required">Email address is
+                      required</span>
+                  </span>
+                </div>
+
+
+                <div class="col-6">
+                  <label id="label1" style="width: 121px;">Phone Number:</label>
+                  <input type="text" class="form-control" placeholder="Enter Phone Number" name="customerPhone"
+                    ng-model="customerPhone" ng-minlength="8" ng-maxlength="13" pattern="[0-9+.-]{1,}"
+                    ng-required="true">
+                  <span ng-show="roomBookingDetails.$submitted || roomBookingDetails.customerPhone.$dirty">
+                    <span class="error" ng-show="roomBookingDetails.customerPhone.$error.required">Phone number is
+                      required</span>
+                    <span class="error" ng-show="roomBookingDetails.customerPhone.$error.pattern">Valid Phone
+                      number</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row mb-5">
+                <div class="col-6">
+                  <span id="label1">ID type:</span><br>
+                  <select name="customerProof" ng-model="customerProof" class="form-control selectbox"
+                    ng-click="idType()" ng-required="true">
+                    <option value="Aadhar card"  ng-pattern="Aadhar">Aadhar card</option>
+                    <option value="Voter ID"  ng-pattern="Varchar">Voter ID</option>
+                    <option value="PAN CARD"  ng-pattern="Varchar">PAN CARD</option>
+                    <option value="Driving Licence" ng-pattern="Varchar">Driving Licence</option>
+                    <option value="" hidden>Choose your govt ID type</option>
+                  </select>
+
+                  <span ng-show="roomBookingDetails.$submitted || roomBookingDetails.customerProof.$dirty">
+                    <span class="error" ng-show="roomBookingDetails.customerProof.$error.required">ID type must be
+                      choosen</span>
+                  </span>
+                </div>
+
+                <div class="col-6">
+                  <label id="label1" style="width: 121px;">ID number</label><br>                 
+                  <input type="text" class="form-control" placeholder="Enter your id card number" name="customerIdno" ng-model="customerIdno"  ng-chage="idType()" 
+                 ng-required="true"> 
+                  <span ng-show="roomBookingDetails.$submitted || roomBookingDetails.customerIdno.$dirty">
+                    <span class="error" ng-show="roomBookingDetails.customerIdno.$error.required">ID number is
+                      required</span>
+                    <span class="error" ng-show="roomBookingDetails.customerIdno.$error.pattern">Valid ID number</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row mt-5">
+                <div class="col-6">
+
+                  <input type="submit" value="NEXT" ng-disabled="roomBookingDetails.$invalid" ng-click="saveDetails()"
+                    class="btn btn1 mt-5">
+                </div>
+                <div class="col-6">
+                  <input type="button" value="VIEW BOOKING" ng-click="ViewBooking()" class="btn btn2 mt-5">
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- NXT PAGE -->
+
+      <div id="additionalRequirements" ng-show="form2">
+        <div class="box">
+          <div class="boxin1">
+            <div class="row">
+              <h2 class="head1 mb-5">Additional Requirements</h2>
+            </div>
+            <form name="secondForm" autocomplete="off" novalidate>
+              <div class="row mb-4">
+                <div class="col-6 mt-2">
+                  <label class="label2 mb-3">Room type :</label><br>
+                  <input type="radio" id="rooms" name="customerRooms" value="AC" ng-model="customerRooms"
+                    ng-required="true">
+                  <span class="p-2">AC</span>
+                  <input type="radio" id="rooms" name="customerRooms" value="NON-AC" ng-model="customerRooms"
+                    style="margin-left:40px;" ng-required="true"> <span class="p-2">NON-AC</span>
+                  <span ng-show="secondForm.$submitted || secondForm.customerRooms.$dirty">
+                    <span class="error" ng-show="secondForm.customerRooms.$error.required">Room size must be
+                      choosen</span>
+                  </span>
+                </div>
+                <div class="col-6">
+                  <label class="label2">Room Size :</label><br>
+                  <select name="customerRsize" ng-model="customerRsize" class="form-control selectbox"
+                    ng-required="true"> 
+                    <option value="" hidden>Choose your room size</option>                  
+                    <option value="500">1 bed room</option>
+                    <option value="1000">2 bed room</option>
+                    <option value="1500">3 bed room</option>
+                    <option value="2000">4 bed room</option>                    
+                  </select>
+
+                  <span ng-show="secondForm.$submitted || secondForm.customerRsize.$dirty">
+                    <span class="error" ng-show="secondForm.customerRsize.$error.required">Room size must be
+                      choosen</span>
+                  </span>
+                </div>
+              </div>
+
+
+              <div class="row d-flex align-items-center mb-4">
+                <div class="col-6 mt-3">
+                  <label class="label2 ">check in-date :</label><br>
+                  <input type="text" placeholder="Select check-in date" class="form-control inputs selectbox"
+                    id="datepicker" name="customerCheckInDate" ng-model="customerCheckInDate" ng-required="true">
+                  <span ng-show="secondForm.$submitted || secondForm.customerCheckInDate.$dirty">
+                    <span class="error" ng-show="secondForm.customerCheckInDate.$error.required"
+                      style="width: 282px;">Room check-in date must be choosen</span>
+                  </span>
+                </div>
+
+                <div class="col-6">
+                  <label class="label2">check in-time:</label><br>               
+
+                  <input type="time" name="customerCheckin" ng-model="customerCheckin" id="timepicker"
+                    class="form-control inputs selectbox" placeholder="Choose room check-in time" ng-required="true"
+                    ng-change="checkTime()">
+
+                  <span ng-show="secondForm.$submitted || secondForm.customerCheckin.$dirty">
+                    <span class="error" ng-show="secondForm.customerCheckin.$error.required" style="width: 290px;">Room
+                      check-in time must be choosen</span>
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <label for="" class="label2" style="width: 190px;">Expected check-out-date</label><br>
+                  <input type="text" class="form-control inputs selectbox" id="datepicker1"
+                    placeholder="Select expected check-out date :" name="customerExpCheckOutDate"
+                    ng-model="customerExpCheckOutDate" ng-required="true"><br>
+                  <span ng-show="secondForm.$submitted || secondForm.customerExpCheckOutDate.$dirty">
+                    <span class="error" ng-show="secondForm.customerExpCheckOutDate.$error.required"
+                      style="width: 290px;">Room check-out date must be choosen</span>
+                  </span>
+
+                </div>
+                <div class="col-6">
+                  <label class="label2" style="width:190px;">Expected check-out Time : </label><br>               
+
+                  <input type="time" name="customerCheckOut" ng-model="customerCheckOut"
+                    class="form-control inputs selectbox" placeholder="Select expected check-out time"
+                    ng-required="true">
+                  <span ng-show="secondForm.$submitted || secondForm.customerCheckOut.$dirty">
+                    <span class="error" ng-show="secondForm.customerCheckOut.$error.required" style="width: 290px;">Room
+                      check-out time must be choosen</span>
+                  </span>
+
+
+                </div>
+              </div>
+              <div class="row d-flex align-items-center">
+                <div class="col-6">
+                  <h2 class="bhead">Services needed</h2>
+                  <input type="checkbox" ng-model="myvar" ng-click="show()"> <span class="label3 p-1"> Catering</span>
+                  <input type="checkbox" ng-model="myvar1" style="margin-left:40px;" ng-click="showFun()"> <span
+                    class="label3 p-1">Laundary
+                    services</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div ng-show="myvar">
+                    <p>Catering type : </p>
+                    <select name="customerCtype" ng-model="customerCtype" class="form-control selectbox"
+                      ng-required="validation">
+                      <option ng-value="300">UP TO 5 PERSONS VEG</option>
+                      <option ng-value="500">UP TO 10 PERSONS VEG</option>
+                      <option ng-value="500">UP TO 5 PERSONS NON-VEG</option>
+                      <option ng-value="800">UP TO 10 PERSONS NON-VEG</option>
+                      <option ng-value="">Choose Catering type</option>
+                    </select>
+                    <span ng-show="secondForm.$submitted || secondForm.customerCtype.$dirty">
+                      <span class="error" ng-show="secondForm.customerCtype.$error.required"
+                        style="width: 290px;">catering type must be choosen</span>
+                    </span>
+
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div ng-show="myvar1">
+                    <p>Laundry type : </p>
+                    <select name="customerLtype" ng-model="customerLtype" class="form-control selectbox"
+                      ng-required="validation1">
+                      <option ng-value="300">Up to 10 clothes - normal wash</option>
+                      <option ng-value="500">Up to 20 clothes - normal wash</option>
+                      <option ng-value="500">Up to 10 clothes - dry wash</option>
+                      <option ng-value="800">Up to 20 clothes - dry wash</option>
+                      <option ng-value="">Choose laundry type</option>
+                    </select>
+
+                    <span ng-show="secondForm.$submitted || secondForm.customerLtype.$dirty">
+                      <span class="error" ng-show="secondForm.customerLtype.$error.required"
+                        style="width: 290px;">laundry type must be choosen</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-5">
+                <div class="col-6">
+
+                  <button type="submit" class="btn btn1 mt-5" ng-click="next()" data-toggle="modal"
+                    data-target="#myModal" ng-disabled="secondForm.$invalid">NEXT</button>
+
+                  <!-- The Modal -->
+                  <div class="modal" id="myModal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header" style="border-bottom: none;">
+                          <h1 class="modal-title">CHARGES</h1>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body" style="padding-left: 100px;">
+                          <table>
+                            <tr>
+                              <th class="model-head">Room charges</th>
+                              <td><input type="text" ng-model="roomPrice" class="model-data mb-2"
+                                  style="padding-left:10px;" disabled></td>
+                            </tr>
+                            <tr>
+                              <th class="model-head">Catering charges</th>
+                              <td><input type="text" class="model-data mb-2" placeholder="0" ng-model="customerCtype"
+                                  style="padding-left:10px;" disabled></td>
+
+
+                            </tr>
+                            <tr>
+                              <th class="model-head">Laundry charge</th>
+                              <td><input type="text" class="model-data mb-2" placeholder="0" ng-model="customerLtype"
+                                  style="padding-left:10px;" disabled></td>
+                            </tr>
+                            <tr>
+                              <th class="model-head">Tax Amount (18%)</th>
+                              <td><input type="text" class="model-data mb-2" ng-model="customerTax1"
+                                  style="padding-left:10px;" disabled></td>
+                            </tr>
+                            <tr>
+                              <th class="model-head">Total cost</th>
+                              <td><input type="text" class="model-data mb-2" ng-model="customerTotal"
+                                  style="padding-left:10px;" disabled></td>
+                            </tr>
+                          </table>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer" style="border-top:none ; display: flex; flex-direction: row;">
+                          <button type="submit" ng-click="submit()" data-dismiss="modal"
+                            class="model-btn">SUBMIT</button>
+                          <button type="button" class="model-btn" data-dismiss="modal">CANCEL</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <input type="button" value="VIEW BOOKING" ng-click="ViewBooking()" class="btn btn2 mt-5">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data-Table -->
+
+      <div id="DataTable">
+        <h4>Data Table</h4>
+        <table class="table table-striped" style="width: 992px ;">
+          <div id="thead" style="width: 992px;">
+            <tr>
+              <td>
+                <p id="icon1"><span class="glyphicon glyphicon-glass"></span></p>
+              </td>
+              <td id="icon2"><span class="glyphicon glyphicon-search"></span><input type="text" placeholder="Search..."
+                  ng-model="search" style="border: none;"> </td>
+              <td id="icon3"><button class="btn" ng-click="resetForm()" style="color: white;"><span
+                    class="glyphicon glyphicon-plus p-1"></span>Create booking</button></td>
+            </tr>
+          </div> 
+        
+          <tbody id="tbody" style="width: 992px;">
+            <tr>             
+              <th id="th1">#</th>
+              <th id="th1">NAME</th>
+              <th id="th1" style="padding: 17px 70px !important;">EMAIL</th>
+              <th id="th1" style="padding: 17px 39px !important;">ROOM TYPE</th>
+              <th id="th1">AGE</th>
+              <th id="th1" style="padding: 17px 39px !important;">ROOM TYPE</th>
+              <th id="th1">EDIT</th>
+              <th id="th1">VIEW</th>
+            </tr>            
+              <tr ng-repeat="customer in customers | startFrom:currentPage * pageSize | limitTo:pageSize | filter:search">
+              <td id="th2">{{ customer.customerId }}</td>
+              <td id="th2">{{ customer.customerName }}</td>
+              <td id="th2">{{ customer.customerEmail }}</td>
+              <td id="th2">{{ customer.customerRooms }}</td>
+              <td id="th2">{{ customer.customerAge }}</td>
+              <td id="th2">{{ customer.customerRsize }}</td>
+              <td id="th2"><button type="submit" ng-click="editCustomerDetails(customer)"  data-bs-toggle="modal2"
+              data-bs-target="#myModal2" style="border: none;">Edit               
+              </button></td>
+              <td id="th2"><button type="submit" ng-click="customersDetails(customer)" data-bs-toggle="modal1"
+                  data-bs-target="#myModal1" style="border: none;">
+                  <span class="glyphicon glyphicon-resize-full"></span>
+                </button></td>
+            </tr> 
+            <tr>
+              <td colspan="4" style="padding-left: 31px;"> {{ customer }} - {{ endCustomer }} of {{ totalRecords }}</td>
+              <td colspan="3" ><span style="margin-left: 185px;">Rows per page:</span>{{ pageCount() }}</td>              
+                <td><button  class="link p-1" ng-disabled="currentPage == 0" ng-click="backPosition()"> < </button>                                 
+                {{ currentPage + 1}} / {{ pageCount() }}
+               <button  class="link p-1" ng-disabled="currentPage >= customers.length/pageSize - 1"  ng-click="position()"> > </button>               
+              </td>
+            </tr>          
+          </tbody>         
+        </table>
+
+        
+
+        <div class="modal2" id="myModal2">
+          <div class="modal-dialog">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header" style="border-bottom: none;">
+                <h1 class="modal-title">DETAILS</h1>
+              </div>
+
+              <!-- Modal body -->
+              <div class="modal-body" style="margin-left: 150px !important;">
+                <table>
+                  <tr>
+                    <th class="model-head mb-2">NAME</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerName"></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">EMAIL</th>
+                    <td class="model-data1 mb-2"><input type="text"  ng-model="customer_detail.customerEmail"></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">ROOM TYPE</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerRooms" disabled></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">AGE</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerAge"></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">GENDER</th>
+                    <td class="model-data1 mb-2"> <input type="text" ng-model="customer_detail.customerGender"></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">PURPOSE</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerPurpose"></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">ID TYPE</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerProof"></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">ID NUMBER</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerIdno"></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">CHECK IN DATE</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerCheckInDate"></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">CHECK OUT DATE</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerExpCheckOutDate"></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head ">ROOM CHARGES</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerRsize" disabled></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head ">CATERING CHARGES</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerCtype" disabled></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head ">LAUNDARY CHARGES</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerLtype" disabled></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head ">TAX</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerTax1" disabled></td>
+                  </tr>
+                  <tr>
+                    <th class="model-head ">TOTAL COST</th>
+                    <td class="model-data1 mb-2"><input type="text" ng-model="customer_detail.customerTotal" disabled></td>
+                  </tr> 
+
+                </table>
+              </div>
+
+              <!-- Modal footer -->
+              <div class="modal-footer">                
+                <button type="submit" class="btn model-btn" ng-click="updateCustomerDetails()" data-bs-dismiss="modal2"
+                  style="margin-left: 250px;"> Update </button>
+                  <button type="submit" class="btn model-btn mt-3"  ng-click="cancel()" data-bs-dismiss="modal2"
+                  style="margin-left: 250px;"> Cancel </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="modal1" id="myModal1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+
+              <!-- Modal Header -->
+              <div class="modal-header" style="border-bottom: none;">
+                <h1 class="modal-title">DETAILS</h1>
+              </div>
+
+              <!-- Modal body -->
+              <div class="modal-body" style="margin-left: 150px !important;">
+                <table>
+                  <tr>
+                    <th class="model-head mb-2">NAME</th>
+                    <td class="model-data1 mb-2">{{customer_detail.customerName }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">EMAIL</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerEmail }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">ROOM TYPE</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerRooms }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">AGE</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerAge }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">GENDER</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerGender }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">PURPOSE</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerPurpose }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">ID TYPE</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerProof }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">ID NUMBER</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerIdno }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">CHECK IN DATE</th>
+                    <!-- <td class="model-data1 mb-2">{{ customers[checkIndex].customerCheckInDate }} - {{ customerCheckin | date:"hh:mm:a" }}</td> -->
+                    <td class="model-data1 mb-2">{{ customer_detail.customerCheckInDate }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head mb-2">CHECK OUT DATE</th>
+                    <!-- <td class="model-data1 mb-2">{{ customers[checkIndex].customerExpCheckOutDate }} - {{ customerCheckOut   | date:"hh:mm:a" }}</td> -->
+                    <td class="model-data1 mb-2">{{ customer_detail.customerExpCheckOutDate }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head ">ROOM CHARGES</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerRsize }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head ">CATERING CHARGES</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerCtype }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head ">LAUNDARY CHARGES</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerLtype }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head ">TAX</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerTax1 }}</td>
+                  </tr>
+                  <tr>
+                    <th class="model-head ">TOTAL COST</th>
+                    <td class="model-data1 mb-2">{{ customer_detail.customerTotal }}</td>
+                  </tr>
+
+                </table>
+              </div>
+
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="submit" class="btn model-btn" ng-click="close()" data-bs-dismiss="modal1"
+                  style="margin-left: 226px;"> Close </button>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+
+
+
+
+<!-- https://www.youtube.com/watch?v=QP1jJlnC8eI   -->
